@@ -1,6 +1,33 @@
 import { useEffect } from 'react';
+import styled from 'styled-components';
 import { usePuzzle } from '@/contexts/puzzle-context';
 import { getPuzzle } from '@/utils/puzzle-logic';
+
+const GameWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+`;
+
+const PuzzleContainer = styled.div`
+  background: #fff;
+`;
+
+const RowContainer = styled.div`
+  display: flex;
+`;
+
+const PuzzlePiece = styled.div<{ isEmpty: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  background-color: ${(props) => (props.isEmpty ? 'transparent' : 'black')};
+  color: #fff;
+`;
 
 export default function Game() {
   const { puzzle, setPuzzle } = usePuzzle();
@@ -10,42 +37,22 @@ export default function Game() {
   }, []);
 
   return (
-    <>
+    <GameWrapper>
       <h1>Game screen</h1>
-      <div
-        style={{
-          display: 'inline-block',
-          backgroundColor: 'white'
-        }}
-      >
+      <PuzzleContainer>
         {puzzle.map((row, r) => (
-          <div
-            key={r}
-            style={{
-              display: 'flex'
-            }}
-          >
+          <RowContainer key={r}>
             {row.map((column, c) => {
-              const color = column === 0 ? 'transparent' : 'lightblue';
+              const isEmpty = column === 0;
               return (
-                <div
-                  key={`${r}-${c}`}
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    width: 50,
-                    height: 50,
-                    backgroundColor: color
-                  }}
-                >
-                  {column !== 0 && <span>{column}</span>}
-                </div>
+                <PuzzlePiece key={`${r}-${c}`} isEmpty={isEmpty}>
+                  {!isEmpty && <span>{column}</span>}
+                </PuzzlePiece>
               );
             })}
-          </div>
+          </RowContainer>
         ))}
-      </div>
-    </>
+      </PuzzleContainer>
+    </GameWrapper>
   );
 }

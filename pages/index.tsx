@@ -1,6 +1,27 @@
 import Head from 'next/head';
 import styles from '@/styles/Home.module.css';
 import Link from 'next/link';
+import styled from 'styled-components';
+
+const Main = styled.main`
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+`;
+
+const Intro = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const StyledLink = styled.a`
+  display: block;
+  padding: 12px 24px;
+  border-radius: 100px;
+  background: #000;
+  color: #fff;
+`;
 
 export default function Home() {
   return (
@@ -11,10 +32,14 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <h1>Grebban puzzle</h1>
-        <Link href="/game">Let&apos;s play</Link>
-      </main>
+      <Main>
+        <Intro>
+          <h1>Grebban puzzle</h1>
+          <Link href="/game" passHref>
+            <StyledLink>Let&apos;s play</StyledLink>
+          </Link>
+        </Intro>
+      </Main>
     </>
   );
 }

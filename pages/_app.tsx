@@ -9,9 +9,9 @@ const open_sans = Open_Sans({ subsets: ['latin'] });
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <PuzzleProvider>
-      <main className={open_sans.className}>
+      <div className={open_sans.className}>
         <Component {...pageProps} />
-      </main>
+      </div>
     </PuzzleProvider>
   );
 }
