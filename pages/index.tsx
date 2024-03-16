@@ -1,6 +1,15 @@
+import Button from '@/components/Button';
 import Head from 'next/head';
-import Link from 'next/link';
+import { FC, ReactNode } from 'react';
 import styled from 'styled-components';
+
+interface CustomLinkProps {
+  className?: string;
+  children: ReactNode;
+  href: string;
+}
+
+interface StyledCustomLinkProps extends CustomLinkProps {}
 
 const Main = styled.main`
   display: grid;
@@ -13,6 +22,12 @@ const Intro = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
+const StyledCustomLink: FC<StyledCustomLinkProps> = ({ className, children, href }) => (
+  <StyledLink href={href} className={className}>
+    {children}
+  </StyledLink>
+);
 
 const StyledLink = styled.a`
   display: block;
@@ -34,9 +49,7 @@ export default function Home() {
       <Main>
         <Intro>
           <h1>Grebban puzzle</h1>
-          <Link href="/game" passHref>
-            <StyledLink>Let&apos;s play</StyledLink>
-          </Link>
+          <Button href="/game">Let&apos;s play</Button>
         </Intro>
       </Main>
     </>
