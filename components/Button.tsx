@@ -7,11 +7,12 @@ interface ButtonProps {
   variant?: 'primary' | 'secondary' | 'text';
   onClick?: () => void;
   children: ReactNode;
+  disabled?: boolean;
 }
 
 const theme = {
   primary: {
-    background: '#000',
+    background: '#21a4ff',
     color: '#fff',
     border: 'none'
   },
@@ -29,16 +30,24 @@ const theme = {
 
 const sharedStyles = css<ButtonProps>`
   display: inline-block;
-  padding: 12px 24px;
+  font-size: 0.8rem;
+  padding: 16px 24px;
   border-radius: 100px;
   text-decoration: none;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  height: 46px;
   ${({ variant }) =>
     variant &&
     css`
       background: ${theme[variant].background};
       color: ${theme[variant].color};
       border: ${theme[variant].border};
+    `}
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      opacity: 0.5;
+      pointer-events: none;
     `}
 `;
 
@@ -50,16 +59,16 @@ const StyledButton = styled.button<ButtonProps>`
   ${sharedStyles};
 `;
 
-const Button = ({ href, variant = 'primary', children, onClick }: ButtonProps) => {
+const Button = ({ href, variant = 'primary', children, onClick, disabled }: ButtonProps) => {
   if (href) {
     return (
-      <StyledLink href={href} variant={variant} onClick={onClick}>
+      <StyledLink href={href} variant={variant} onClick={onClick} disabled={disabled}>
         {children}
       </StyledLink>
     );
   }
   return (
-    <StyledButton variant={variant} onClick={onClick}>
+    <StyledButton variant={variant} onClick={onClick} disabled={disabled}>
       {children}
     </StyledButton>
   );

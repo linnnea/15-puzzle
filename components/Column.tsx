@@ -1,43 +1,63 @@
-import { usePuzzle } from '@/contexts/puzzle-context';
-import { isPieceInCorrectPosition } from '@/utils/puzzle-logic';
+import { getNumberPosition, getVisualPosition } from '@/utils/logic';
+import React from 'react';
+import { useSpring, animated } from '@react-spring/web';
 import styled from 'styled-components';
-
+import { usePuzzle } from '@/contexts/puzzle-context';
 interface ColumnProps {
-  column: number;
-  rowIndex: number;
-  columnIndex: number;
-  handleMovePiece: (x: number, y: number) => void;
-  complete: boolean;
-  isEmpty: boolean;
+  tile: number;
+  index: number;
+  width: number;
+  height: number;
+  handleMovePiece: (index: number) => void;
 }
 
-const PuzzlePiece = styled.div<{ isEmpty: boolean; correctPosition: boolean }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50px;
-  height: 50px;
-  background-color: ${(props) =>
-    props.isEmpty ? 'transparent' : props.correctPosition ? 'lightgreen' : '#000'};
-  color: #fff;
-  margin: 4px;
-  border-radius: 8px;
-  cursor: pointer;
+const StyledColumn = styled(animated.li)<{
+  $isCorrectTile: boolean;
+  $isEmptySlot: boolean;
+  $rowSum: number;
+}>`
+  display: grid;
+  place-items: center;
+  list-style-type: none;
+  position: absolute;
+  width: calc(100% / ${(props) => props.$rowSum});
+  height: calc(100% / ${(props) => props.$rowSum});
+  background: ${(props) => (props.$isCorrectTile ? '#21a4ff' : '#d3d3d3')};
+  color: ${(props) => (props.$isCorrectTile ? '#fff' : '#000')};
+  opacity: ${(props) => (props.$isEmptySlot ? 0 : 1)};
+  border-radius: ${(props) => (props.$isEmptySlot ? 'unset' : '1rem')};
+  cursor: ${(props) => (props.$isEmptySlot ? '' : 'pointer')};
   user-select: none;
 `;
 
-const Column = ({ column, rowIndex, columnIndex, handleMovePiece, isEmpty }: ColumnProps) => {
-  const { puzzle } = usePuzzle();
-  const correctPosition = isPieceInCorrectPosition(puzzle, rowIndex, columnIndex);
+const Column: React.FC<ColumnProps> = ({ tile, index, width, height, handleMovePiece }) => {
+  const { tileSum, rowSum } = usePuzzle();
+  const { row, col } = getNumberPosition(index, rowSum);
+  const visualPos = getVisualPosition(row, col, width, height);
+
+  const motionStyle = useSpring({
+    to: {
+      transform: `translate3d(${visualPos.x}px, ${visualPos.y}px, 0)`
+    },
+    config: {
+      tension: 170,
+      friction: 26
+    }
+  });
+
+  const isCorrectTile = tile === index;
+  const isEmptySlot = tile === tileSum - 1;
 
   return (
-    <PuzzlePiece
-      isEmpty={isEmpty}
-      onClick={() => handleMovePiece(rowIndex, columnIndex)}
-      correctPosition={correctPosition}
+    <StyledColumn
+      style={{ ...motionStyle }}
+      $isCorrectTile={isCorrectTile}
+      $isEmptySlot={isEmptySlot}
+      $rowSum={rowSum}
+      onClick={() => handleMovePiece(index)}
     >
-      {!isEmpty && <span>{column}</span>}
-    </PuzzlePiece>
+      {tile + 1}
+    </StyledColumn>
   );
 };
 
