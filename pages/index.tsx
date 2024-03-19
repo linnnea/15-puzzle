@@ -1,43 +1,84 @@
-import Button from '@/components/Button';
 import Head from 'next/head';
-import { FC, ReactNode } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+import Button from '@/components/Button';
+import Board from '@/components/Board';
+import { shuffle } from '@/utils/logic';
+import { useState } from 'react';
+import { GameLevel, usePuzzle } from '@/contexts/puzzle-context';
 
-interface CustomLinkProps {
-  className?: string;
-  children: ReactNode;
-  href: string;
-}
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
-interface StyledCustomLinkProps extends CustomLinkProps {}
-
-const Main = styled.main`
+const Main = styled.div`
   display: grid;
   place-items: center;
   min-height: 100vh;
+  animation: ${fadeIn} 0.5s ease-out;
 `;
 
 const Intro = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  p {
+    margin-bottom: 0.9rem;
+  }
 `;
 
-const StyledCustomLink: FC<StyledCustomLinkProps> = ({ className, children, href }) => (
-  <StyledLink href={href} className={className}>
-    {children}
-  </StyledLink>
-);
+const StyledLabel = styled.label`
+  margin-bottom: 1rem;
+`;
 
-const StyledLink = styled.a`
-  display: block;
-  padding: 12px 24px;
-  border-radius: 100px;
-  background: #000;
-  color: #fff;
+const StyledRadioInput = styled.input`
+  margin-right: 10px;
 `;
 
 export default function Home() {
+  const {
+    tiles,
+    gameInProgress,
+    setGameInProgress,
+    setDisabled,
+    setTiles,
+    tileSum,
+    setTileSum,
+    rowSum,
+    setRowSum,
+    gameLevel,
+    setGameLevel
+  } = usePuzzle();
+
+  const shuffleTiles = () => {
+    const shuffledTiles = shuffle(tiles, rowSum, tileSum);
+    setTiles(shuffledTiles);
+  };
+
+  const startClick = () => {
+    shuffleTiles();
+    setGameInProgress(true);
+    setDisabled(false);
+  };
+
+  const handleLevelChange = (level: GameLevel) => {
+    setGameLevel(level);
+    if (level === GameLevel.EASY) {
+      setTileSum(9);
+      setRowSum(3);
+    } else if (level === GameLevel.HARD) {
+      setTileSum(15);
+      setRowSum(5);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -49,7 +90,35 @@ export default function Home() {
       <Main>
         <Intro>
           <h1>Grebban puzzle</h1>
-          <Button href="/game">Let&apos;s play</Button>
+          {gameInProgress ? (
+            <Board />
+          ) : (
+            <Intro>
+              <p>Select level:</p>
+              <label>
+                <StyledRadioInput
+                  type="radio"
+                  name="difficulty"
+                  value={GameLevel.EASY}
+                  checked={gameLevel === GameLevel.EASY}
+                  onChange={() => handleLevelChange(GameLevel.EASY)}
+                />
+                Easy
+              </label>
+
+              <StyledLabel>
+                <StyledRadioInput
+                  type="radio"
+                  name="difficulty"
+                  value={GameLevel.HARD}
+                  checked={gameLevel === GameLevel.HARD}
+                  onChange={() => handleLevelChange(GameLevel.HARD)}
+                />
+                Hard
+              </StyledLabel>
+              <Button onClick={() => startClick()}>Let&apos;s play</Button>
+            </Intro>
+          )}
         </Intro>
       </Main>
     </>
