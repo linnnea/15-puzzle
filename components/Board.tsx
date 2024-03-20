@@ -1,10 +1,15 @@
 import { useState } from 'react';
-import { shuffle, canMoveTile, moveTile, isQuizSolved } from '@/utils/logic';
 import { BOARD_SIZE } from '@/constants/constants';
 import Column from './Column';
 import Button from './Button';
 import styled from 'styled-components';
 import { GameLevel, usePuzzle } from '@/contexts/puzzle-context';
+import {
+  shuffle,
+  canMoveTile,
+  moveTile,
+  isQuizSolved,
+} from '@/utils/puzzle-logic';
 
 const StyledBoard = styled.ul<{ $isGameLevelEasy: boolean }>`
   position: relative;
@@ -24,8 +29,15 @@ const StyledButtons = styled.div`
 `;
 
 const Board = () => {
-  const { tiles, setTiles, gameInProgress, setGameInProgress, tileSum, rowSum, gameLevel } =
-    usePuzzle();
+  const {
+    tiles,
+    setTiles,
+    gameInProgress,
+    setGameInProgress,
+    tileSum,
+    rowSum,
+    gameLevel,
+  } = usePuzzle();
   const [numberOfMoves, setNumberOfMoves] = useState(0);
 
   const pieceWidth = Math.round(BOARD_SIZE / rowSum);
@@ -77,7 +89,7 @@ const Board = () => {
           <Button onClick={() => shuffleClick()} disabled={playerWins}>
             Shuffle
           </Button>
-          <Button onClick={() => setGameInProgress(false)} variant="secondary">
+          <Button onClick={() => setGameInProgress(false)} variant='secondary'>
             Exit game
           </Button>
         </StyledButtons>

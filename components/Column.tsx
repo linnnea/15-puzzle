@@ -1,8 +1,8 @@
-import { getNumberPosition, getVisualPosition } from '@/utils/logic';
-import React from 'react';
 import { useSpring, animated } from '@react-spring/web';
 import styled from 'styled-components';
 import { usePuzzle } from '@/contexts/puzzle-context';
+import { getNumberPosition, getVisualPosition } from '@/utils/puzzle-logic';
+import { FC } from 'react';
 interface ColumnProps {
   tile: number;
   index: number;
@@ -30,19 +30,25 @@ const StyledColumn = styled(animated.li)<{
   user-select: none;
 `;
 
-const Column: React.FC<ColumnProps> = ({ tile, index, width, height, handleMovePiece }) => {
+const Column: FC<ColumnProps> = ({
+  tile,
+  index,
+  width,
+  height,
+  handleMovePiece,
+}) => {
   const { tileSum, rowSum } = usePuzzle();
   const { row, col } = getNumberPosition(index, rowSum);
   const visualPos = getVisualPosition(row, col, width, height);
 
   const motionStyle = useSpring({
     to: {
-      transform: `translate3d(${visualPos.x}px, ${visualPos.y}px, 0)`
+      transform: `translate3d(${visualPos.x}px, ${visualPos.y}px, 0)`,
     },
     config: {
       tension: 170,
-      friction: 26
-    }
+      friction: 26,
+    },
   });
 
   const isCorrectTile = tile === index;
