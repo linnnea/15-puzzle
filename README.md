@@ -1,40 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 15 Puzzle Game
+
+This project is a fun and interactive implementation of the classic 15 puzzle game, built using Next.js, TypeScript, react-spring/web, and styled-components.
 
 ## Getting Started
 
-First, run the development server:
+To get started with the game locally, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Clone this repository to your local machine.
+2. Navigate to the project directory in your terminal.
+3. Run either `yarn install` or `npm install` to install the necessary dependencies.
+4. Run either `yarn dev` or `npm run dev` to start the development server.
+5. Open your web browser and navigate to `http://localhost:3000` to play the game.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How to Play
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+The objective of the 15 Puzzle Game is to rearrange the tiles in numerical order from 1 to either 9 or 15 depending on game level, with the empty tile in the bottom right corner. You can move tiles by clicking or tapping on them if they are adjacent to the empty space. Keep rearranging until you solve the puzzle!
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### Difficulty Levels
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+You can choose to play the game in either easy or hard mode:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Easy Mode**: Start with the tiles arranged in numerical order. Perfect for beginners or a quick challenge!
+- **Hard Mode**: Begin with the tiles shuffled randomly. Can you solve the puzzle from this scrambled state?
 
-## Learn More
+## Features
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Built with Next.js, providing a fast and efficient development environment.
+- Utilizes TypeScript for enhanced code readability and maintainability.
+- Smooth animations powered by react-spring/web.
+- Stylish and customizable UI components using styled-components.
+- Context API for managing game state and user interactions.
