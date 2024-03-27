@@ -1,5 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
-
 export const getIndex = (row: number, col: number, rowSum: number): number => {
   return parseInt(row.toString(), 10) * rowSum + parseInt(col.toString(), 10);
 };

@@ -21,12 +21,6 @@ interface PuzzleContextType {
   setGameInProgress: Dispatch<SetStateAction<boolean>>;
   disabled: boolean;
   setDisabled: Dispatch<SetStateAction<boolean>>;
-  time: { ms: number; s: number; m: number; h: number };
-  setTime: Dispatch<SetStateAction<{ ms: number; s: number; m: number; h: number }>>;
-  interv: any;
-  setInterv: Dispatch<SetStateAction<any>>;
-  status: number;
-  setStatus: Dispatch<SetStateAction<number>>;
   gameLevel: GameLevel;
   setGameLevel: Dispatch<SetStateAction<GameLevel>>;
   tileSum: number;
@@ -53,9 +47,6 @@ interface PuzzleProviderProps {
 export const PuzzleProvider: FC<PuzzleProviderProps> = ({ children }) => {
   const [gameInProgress, setGameInProgress] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const [time, setTime] = useState({ ms: 0, s: 0, m: 0, h: 0 });
-  const [interv, setInterv] = useState<any>();
-  const [status, setStatus] = useState(0);
   const [gameLevel, setGameLevel] = useState<GameLevel>(GameLevel.EASY);
   const [tileSum, setTileSum] = useState<number>(9);
   const [rowSum, setRowSum] = useState<number>(3);
@@ -74,12 +65,6 @@ export const PuzzleProvider: FC<PuzzleProviderProps> = ({ children }) => {
         setGameInProgress,
         disabled,
         setDisabled,
-        time,
-        setTime,
-        interv,
-        setInterv,
-        status,
-        setStatus,
         gameLevel,
         setGameLevel,
         tileSum,
